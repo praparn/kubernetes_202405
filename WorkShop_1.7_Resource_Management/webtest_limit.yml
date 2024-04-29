@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: webtest-limit
+  labels:
+    name: webtest_limit
+    owner: Praparn_L
+    version: "1.0"
+    module: LimitRange
+    environment: development
+spec:
+  limits:
+  - type: Pod
+    max:
+      cpu: "1"
+      memory: 1Gi
+    min:
+      cpu: 200m
+      memory: 6Mi
+    
+  - type: Container
+    default:
+      cpu: 300m
+      memory: 200Mi
+      ephemeral-storage: 50Mi
+    defaultRequest:
+      cpu: 200m
+      memory: 100Mi
+      ephemeral-storage: 10Mi
+    max:
+      cpu: "1"
+      memory: 1Gi
+      ephemeral-storage: 500Mi
+    min:
+      cpu: 100m
+      memory: 3Mi
+      ephemeral-storage: 10Mi
+
+  - type: PersistentVolumeClaim
+    max:
+      storage: 50Gi
+    min:
+      storage: 1Gi

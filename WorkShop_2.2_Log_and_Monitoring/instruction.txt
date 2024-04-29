@@ -1,0 +1,100 @@
+Instruction for Workshop 2.2_Log_and_Monitoring:
+Note: This instruction will demonstrate about how to track log and monitor:
+====================================================
+
+====================================================
+Part1: Container Logging:
+====================================================
+1. Get command prompt for access folder workshop 2.2 by command :cd /xxxx/WorkShop_2.2_Log_and_Monitoring
+2. Check File on WorkShop
+
+3. Create Database Deployment by command:
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_2.2_Log_and_Monitoring/databasemodule_deploy.yml
+	kubectl get deployment/maindb
+	kubectl get rs
+	kubectl get pods
+
+4. Check Detail of Pods and Ephemeral Containers by command:
+	kubectl describe pods/<pods name>
+
+5. Check Log of Pods/Container by command:
+	kubectl get pods
+	kubectl logs pods/<pods name> -c maindb
+
+6. Create WebModule Deployment by command:
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_2.2_Log_and_Monitoring/webmodule_deploy.yml
+	kubectl get deployment/web
+	kubectl get rs
+	kubectl get pods
+
+7. Check Log of WebService by command:
+	kubectl logs pods/<pods name> -c webservice
+
+8. Check Log of WebCache by command:
+	kubectl logs pods/<pods name> -c webcache
+
+9. Check Log of Cachedb by command:
+	kubectl logs pods/<pods name> -c cachedb
+
+10. Open kubenetes dashboard by command:
+	kubectl get secret -n kubernetes-dashboard | grep kubernetes-dashboard-admin
+	kubectl describe secret kubernetes-dashboard-admin -n kubernetes-dashboard ==> Record Token
+	kubectl get pods -n=kubernetes-dashboard
+	kubectl port-forward --address 0.0.0.0 pods/<kubernetes-dashboard-xxx> 8443:8443 -n=kubernetes-dashboard
+
+	*Test by open browser: 
+	https://<Public IP>:8443
+
+11. Test cilium hubble ui by command:
+    kubectl get pods -n=kube-system | grep hubble-ui
+	kubectl port-forward --address 0.0.0.0 pods/<hubble-ui-xxxxxx-xxxxx> 12000:8081 -n=kube-system
+
+    *Test by open browser: 
+	http://<Public IP>:12000
+
+12. Cleanup lab by command:
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_2.2_Log_and_Monitoring/databasemodule_deploy.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_2.2_Log_and_Monitoring/webmodule_deploy.yml
+
+====================================================
+Part2: Ephemeral Logging:
+====================================================
+
+1. Create pods from image without shell by command:
+	kubectl run north-sentinel --image=labdocker/north-sentinel-island:away --restart=Never
+	kubectl get pods
+
+2. Try to exec into pod by command: (expect fail)
+	kubectl exec -it north-sentinel sh
+----------------------------------------
+Example message:
+error: Internal error occurred: error executing command in container: failed to exec in container: failed to start exec "4a5aa956444e01ae4df7f4082234d01e396fdf5bf76d1794ba73fa5e79e4148a": OCI runtime exec failed: exec failed: unable to start container process: exec: "sh": executable file not found in $PATH: unknown
+----------------------------------------
+
+3. Debug thing happen on pods via alpine linux by command:
+    kubectl debug -it north-sentinel --image=labdocker/alpine:latest --target=north-sentinel
+
+4. Check Ephemeral feature by command:
+	kubectl describe pods north-sentinel
+
+5. CleanUp by command:
+	kubectl delete pods/north-sentinel
+
+====================================================
+Part3: Ephemeral Terminate Application:
+====================================================
+
+1. Create pods from image sample for failing application and check detail by command:
+	kubectl run nginx-bad --image=labdocker/nginx:badversion
+	kubectl get pods
+	kubectl describe pods/nginx-bad
+
+2. Debug by copy all image to inject on epherephemeral by command:
+    kubectl debug nginx-bad -it --copy-to=nginx-debug --container=nginx-bad -- sh
+
+3. Exit from shell and cleanup the debug container by command:
+    kubectl get pods
+	kubectl delete pods/nginx-debug
+
+4. CleanUp by command:
+	kubectl delete pods/nginx-bad
