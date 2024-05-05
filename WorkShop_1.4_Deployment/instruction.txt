@@ -6,12 +6,12 @@ Note: This instruction will demonstrate about how to use Deployment/RS for deplo
 2. Check File on WorkShop
 
 3. Create Deployment and check status by command:
-	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_1.4_Deployment/webtest_deploy.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_1.4_Deployment/webtest_deploy.yml
 	kubectl get deployment
 	kubectl get pods --show-labels
 
 4. Create Service and check status by command:
-	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_1.4_Deployment/webtest_svc.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_1.4_Deployment/webtest_svc.yml
 	kubectl get svc
 	---------------------------------------------------
 	Example: Port mapping outside on TCP:32500
@@ -100,5 +100,5 @@ REVISION  CHANGE-CAUSE
 	kubectl get rs
 
 21. Cleanup Lab by command:
-	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_1.4_Deployment/webtest_deploy.yml
-	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_1.4_Deployment/webtest_svc.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_1.4_Deployment/webtest_deploy.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_1.4_Deployment/webtest_svc.yml
