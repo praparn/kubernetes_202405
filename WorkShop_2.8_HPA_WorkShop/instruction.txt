@@ -50,7 +50,32 @@ Part 1: HPA Configuration:
 	kubectl top nodes
 	kubectl describe hpa/webtest
 
-10. Cleanup lab by command:
+10. Delete HPA by command:
+    kubectl Delete -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_2.8_HPA_WorkShop/webtest_hpa.yml
+
+11. Crete HPA base on container by command:
+	kubectl Delete -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_2.8_HPA_WorkShop/webtest_hpa_container_base.yml
+
+12. Generate Load:
 	kubectl delete pods/load-generator
-	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_2.8_HPA_WorkShop/webtest_hpa.yml
+	kubectl run -i --tty load-generator --image=busybox /bin/sh			==> <Check Until Load Generator WorkFine>
+	wget -q -O- http://webtest.default.svc.cluster.local:5000
+	while true; sleep 0.01; do wget -q -O- http://webtest.default.svc.cluster.local:5000; done
+
+13. Create another shell for monitor performance by command: (Interval is 5 min)
+	kubectl get hpa
+	kubectl top pods
+	kubectl top nodes
+
+14. Scale Down by Ctrl+C on load-generate
+
+15. Monitor performance: (Interval is 10 min)
+	kubectl get hpa
+	kubectl top pods
+	kubectl top nodes
+	kubectl describe hpa/webtest-container-base
+
+16. Cleanup lab by command:
+	kubectl delete pods/load-generator
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_2.8_HPA_WorkShop/webtest-container-base.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202312/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml

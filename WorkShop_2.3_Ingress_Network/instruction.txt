@@ -162,7 +162,9 @@ Kong Gateway API Deployment
 	curl https://<public ip>:32100
 
 14. Apply route to Kong Gateway API
-    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-route.yml
+    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-route1.yml
+    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-route2.yml
+
 
 15. Test access website by browser:
 	http://webtest1.kuberneteslabthailand.com:30100
@@ -172,9 +174,36 @@ Kong Gateway API Deployment
 	curl http://<Public IP>:30100 -H 'Host:webtest1.kuberneteslabthailand.com'
 	curl http://<Public IP>:30100 -H 'Host:webtest2.kuberneteslabthailand.com'
 
-16. 
+16. Create key-authentication plugin by command:
+	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-jarvis-apikey.yml
+
+17. Enable key-authentication for service by command:
+	kubectl annotate service webtest1 konghq.com/plugins=rate-limit-5-min,key-auth --overwrite
+	kubectl annotate service webtest2 konghq.com/plugins=rate-limit-5-min,key-auth --overwrite
+
+18. ReTest access website by browser: (Expect Fail 403 Forbidden)
+	http://webtest1.kuberneteslabthailand.com:30100
+	http://webtest2.kuberneteslabthailand.com:30100
+
+	*Remark: We can test with curl in lab machine by command:
+	curl http://<Public IP>:30100 -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl http://<Public IP>:30100 -H 'Host:webtest2.kuberneteslabthailand.com'
+
+19. Create Consumer and Secret for authentiation by command:
+    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-jarvis-secret.yml
+	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-jarvis-consumer.yml
 
 
+20. ReTest access website test again.
+    curl -H 'apikey: nd-6e^<vHSZa$3B/cYXuDN9K#8UzR?%s' http://<Public IP>:30100 -H 'Host:webtest1.kuberneteslabthailand.com'
+    curl -H 'apikey: nd-6e^<vHSZa$3B/cYXuDN9K#8UzR?%s' http://<Public IP>:30100 -H 'Host:webtest2.kuberneteslabthailand.com'
+
+21. CleanUp Lab
+    kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-jarvis-secret.yml
+	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-jarvis-consumer.yml
+    kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-jarvis-apikey.yml
+    kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-route1.yml
+    kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-route2.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/webtest_deploy.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/webtest_deploy2.yml
 	kubectl delete pods/curl
