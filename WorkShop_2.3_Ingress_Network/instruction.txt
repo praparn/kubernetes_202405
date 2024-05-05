@@ -140,12 +140,13 @@ _L,version=1.0
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/ingress_webtest_tls_secret_webtest1.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/ingress_webtest_tls_secret_webtest2.yml
 
-
+--------------------------------------------------------------------------
+Kong Gateway API Deployment
 --------------------------------------------------------------------------
 13. Create Gateway API with Kong
 	13.1 Create CRD (Customer Resource Definition),GatewayClass and Gateway by command: 
-    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/standard-install.yaml
-    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/gatewayclass-gateway.yaml
+    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/standard-install.yml
+    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/gatewayclass-gateway.yml
 
 	13.2 Install Kong engine on cluster by command:
 	helm repo add kong https://charts.konghq.com
@@ -159,6 +160,19 @@ _L,version=1.0
 	13.4 Test kong connnectivity
 	curl http://<public ip>:30100
 	curl https://<public ip>:32100
+
+14. Apply route to Kong Gateway API
+    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-route.yml
+
+15. Test access website by browser:
+	http://webtest1.kuberneteslabthailand.com:30100
+	http://webtest2.kuberneteslabthailand.com:30100
+
+	*Remark: We can test with curl in lab machine by command:
+	curl http://<Public IP>:30100 -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl http://<Public IP>:30100 -H 'Host:webtest2.kuberneteslabthailand.com'
+
+16. 
 
 
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/webtest_deploy.yml

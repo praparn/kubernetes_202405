@@ -1,0 +1,20 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: webtest2-httproute
+  annotations:
+    konghq.com/strip-path: 'true'
+spec:
+  parentRefs:
+  - name: kong
+  hostnames:
+  - webtest2.kuberneteslabthailand.com
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: webtest2
+      kind: Service
+      port: 80
