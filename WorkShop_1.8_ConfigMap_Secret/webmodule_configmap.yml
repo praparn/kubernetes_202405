@@ -11,3 +11,4 @@ metadata:
     environment: "development"
 data:
   REDIS_HOST: localhost
+immutable: true

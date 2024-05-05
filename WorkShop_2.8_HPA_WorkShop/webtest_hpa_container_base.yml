@@ -19,10 +19,10 @@ spec:
       target:
         type: Utilization
         averageUtilization: 10
-#  - type: ContainerResource
-#    resource:
-#      container: webtest
-#      name: memory
-#      target:
-#        type: Utilization
-#        averageUtilization: 20
+  - type: ContainerResource
+    resource:
+      container: webtest
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 10

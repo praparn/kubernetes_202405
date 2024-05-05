@@ -71,3 +71,59 @@ Create Job for Monitor System via LINE:
 
 11. Delete Cronjob by command:
 kubectl delete -f job_notify_cron.yml 
+
+====================================================
+Create Parallel Job for access redis and pull:
+====================================================
+1. Get command prompt for access folder workshop 2.1 by command :cd /xxxx/WorkShop_2.1_Job_CronJob
+2. Check File on WorkShop by command: "cd ~/kubernetes_202405/WorkShop_2.1_Job_CronJob/parallelism"
+3. Create Redis and Redis's service by command:
+  kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/redis-pods.yml
+  kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/redis-service.yml
+
+4. Check redis pods and service by command:
+  kubectl get pods
+  kubectl get svc
+
+5. Run redis-cli and prepare vaule on redis by command:
+  kubectl run -i --tty temp --image redis --command "/bin/sh"
+
+  -------------
+  Pods's inside
+  -------------
+  redis-cli -h redis
+  redis:6379> rpush job2 "BTC"
+  (integer) 1
+  redis:6379> rpush job2 "ETH"
+  (integer) 2
+  redis:6379> rpush job2 "USDT"
+  (integer) 3
+  redis:6379> rpush job2 "BNB"
+  (integer) 4
+  redis:6379> rpush job2 "SOL"
+  (integer) 5
+  redis:6379> rpush job2 "USDC"
+  (integer) 6
+  redis:6379> rpush job2 "XRP"
+  (integer) 7
+  redis:6379> rpush job2 "DOGE"
+  (integer) 8
+  redis:6379> rpush job2 "TON"
+  (integer) 9
+  redis:6379> lrange job2 0 -1
+  -------------
+  exit
+
+ 6. Run job by command:
+  kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/job-parallel.yml
+  kubectl describe jobs/job-parallel
+
+ 7. Wait under job had been done:
+  kubectl wait --for=condition=complete --timeout=300s job/job-parallel
+
+ 8. View log from job by command:
+  kubectl logs pods/<pods name>
+ 
+ 9. CleanUp lab:
+  kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/redis-pods.yml
+  kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/redis-service.yml

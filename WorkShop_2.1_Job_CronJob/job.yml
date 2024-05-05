@@ -9,6 +9,9 @@ metadata:
     module: Job
     environment: development
 spec:
+  completions: 1
+  parallelism: 1
+  Completion Mode:  Indexed
   ttlSecondsAfterFinished: 30
   activeDeadlineSeconds: 60
   template:
@@ -31,4 +34,4 @@ spec:
           value: "Y"
         - name: TOKEN
           value: "pKCqcUWGmCpEoNBDNZxsnt5OT4kP41F2BK3QsdSdMDw"
-      restartPolicy: Never
+      restartPolicy: Never #OnFailure
