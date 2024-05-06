@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.1
-  creationTimestamp: null
+  #creationTimestamp: null
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: ingressclassparams.elbv2.k8s.aws
@@ -203,7 +203,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.1
-  creationTimestamp: null
+  #creationTimestamp: null
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: targetgroupbindings.elbv2.k8s.aws
@@ -646,7 +646,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  creationTimestamp: null
+  #creationTimestamp: null
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-controller-role
@@ -933,7 +933,7 @@ kind: MutatingWebhookConfiguration
 metadata:
   annotations:
     cert-manager.io/inject-ca-from: kube-system/aws-load-balancer-serving-cert
-  creationTimestamp: "null"
+  #creationTimestamp: "null"
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-webhook
@@ -1020,7 +1020,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   annotations:
     cert-manager.io/inject-ca-from: kube-system/aws-load-balancer-serving-cert
-  creationTimestamp: "null"
+  #creationTimestamp: "null"
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-webhook
