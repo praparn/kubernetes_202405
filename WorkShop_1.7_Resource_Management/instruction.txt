@@ -27,7 +27,6 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IkZrTkFjN296TUxsbmFfZmU0MklfLVdUdnRjQXFyMWJ1TzFLbWRD
 	------------------------------------------------------------------------------------
 
 5. Open Kubernetes's forward for operate:
-	kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
 	kubectl -n kubernetes-dashboard patch svc kubernetes-dashboard-kong-proxy --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30010}]'
 	kubectl get svc -n=kubernetes-dashboard
 

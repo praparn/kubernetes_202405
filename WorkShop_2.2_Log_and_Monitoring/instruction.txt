@@ -39,20 +39,23 @@ Part1: Container Logging:
 10. Open kubenetes dashboard by command:
 	kubectl get secret -n kubernetes-dashboard | grep kubernetes-dashboard-admin
 	kubectl describe secret kubernetes-dashboard-admin -n kubernetes-dashboard ==> Record Token
-	kubectl get pods -n=kubernetes-dashboard
-	kubectl port-forward --address 0.0.0.0 pods/<kubernetes-dashboard-xxx> 8443:8443 -n=kubernetes-dashboard
 
 	*Test by open browser: 
-	https://<Public IP>:8443
+	https://<Public IP>:30010
 
-11. Test cilium hubble ui by command:
-    kubectl get pods -n=kube-system | grep hubble-ui
-	kubectl port-forward --address 0.0.0.0 pods/<hubble-ui-xxxxxx-xxxxx> 12000:8081 -n=kube-system
+11. Generate some load by command:
+	curl http://<private IP>:30500/init
+
+12. Test cilium hubble ui by command:
+    kubectl get svc -n=kube-system | grep hubble-ui
+	kubectl -n kube-system patch svc hubble-ui --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30020}]'
+    kubectl get svc -n=kube-system | grep hubble-ui
 
     *Test by open browser: 
-	http://<Public IP>:12000
+	http://<Public IP>:30020
 
-12. Cleanup lab by command:
+
+13. Cleanup lab by command:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.2_Log_and_Monitoring/databasemodule_deploy.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.2_Log_and_Monitoring/webmodule_deploy.yml
 

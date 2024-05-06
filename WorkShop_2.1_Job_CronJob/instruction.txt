@@ -118,13 +118,14 @@ Create Parallel Job for access redis and pull:
  6. Run job by command:
   kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/parallelism/job-parallel.yml
   kubectl describe jobs/job-parallel
+  kubectl get job
 
- 7. Wait under job had been done:
-  kubectl wait --for=condition=complete --timeout=300s job/job-parallel
-
- 8. View log from job by command:
+ 7. View log from job by command:
+  kubectl get pods
   kubectl logs pods/<pods name>
  
  9. CleanUp lab:
+  kubectl delete pods/temp
+  kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/parallelism/job-parallel.yml
   kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/parallelism/redis-pods.yml
   kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/parallelism/redis-service.yml
