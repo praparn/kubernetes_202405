@@ -31,7 +31,7 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IkZrTkFjN296TUxsbmFfZmU0MklfLVdUdnRjQXFyMWJ1TzFLbWRD
 	kubectl get svc -n=kubernetes-dashboard
 
 	*Test by open browser: 
-	https://<Public IP>:30010  <== input token on No.4 for test, Try to access hubble-ui for this
+	https://<Public IP>:30010  <== input token on No.4 for test
 
 6. Create Generic-Admin for access by command and relogin again:
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_1.7_Resource_Management/user-restrict-admin.yml

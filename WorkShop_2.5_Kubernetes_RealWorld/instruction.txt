@@ -81,7 +81,7 @@ tmux new -s Lab
 4. (Master) Prepare configuration for initial kubernetes master
     (run export environment)
 	cd ~
-	curl https://raw.githubusercontent.com/praparn/sourcesetup/master/kubernetes_initial/version129/kubeadm-init.yaml > ~/kubeadm-init.yaml
+	curl https://raw.githubusercontent.com/praparn/sourcesetup/master/kubernetes_initial/version130/kubeadm-init.yaml > ~/kubeadm-init.yaml
   	sed -i -e "s/2.2.2.2/$HostnameMaster1/g" ~/kubeadm-init.yaml
   	sed -i -e "s/hostnamemaster/$HostnameMaster1/g" ~/kubeadm-init.yaml
   	sed -i -e "s/KubernetesClusterName/$ClusterName/g" ~/kubeadm-init.yaml
@@ -156,14 +156,23 @@ UDP  ip-10-96-0-10.ap-southeast-1 rr
 	kubectl get pods -n kube-system
 
 ========================================  Create Dashboard =====================================================================
-14. Create Dashboard by command:
-	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_1.7_Resource_Management/dashboard-restrict.yml
-	watch kubectl get all -n=kubernetes-dashboard
-	cd ~
+### Install Helm ### (If not exceed)
+14. Install helm client on master node by command:
+	curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+   chmod 700 get_helm.sh
+   ./get_helm.sh
 
-15. Create Generic-Admin for access by command and relogin again:
+15. Check helm readiness and update by command:
+	 helm list			==> Expect blank
+    (Remark: Case to rollback and reinitial helm: helm reset --force)
+
+16. Helm install kubernetes dashboard by command:
+    helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/ && helm repo update
+    helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+	watch kubectl get all -n=kubernetes-dashboard
+
+17. Create Generic-Admin for access by command and relogin again:
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_1.7_Resource_Management/user-restrict-admin.yml
-	kubectl get secret -n kubernetes-dashboard | grep kubernetes-dashboard-admin
 	kubectl describe secret kubernetes-dashboard-admin -n kubernetes-dashboard
 	*Remark: Record Token:
 	Ex:
@@ -171,19 +180,19 @@ UDP  ip-10-96-0-10.ap-southeast-1 rr
 eyJhbGciOiJSUzI1NiIsImtpZCI6IkZrTkFjN296TUxsbmFfZmU0MklfLVdUdnRjQXFyMWJ1TzFLbWRDckU1YncifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLXE1Z2Z2Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI1MmNiZjU3NS02Y2ExLTQ3YzQtOWQwOS0zYzg1ZTlmMTkxOTEiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.hNxqxqeLK1JxOzK4OYPLbv7FlumBkHrwjL6lDUulaMEU1Iwy1Gq9cJvrLj5dh7xec86PasEckTq1BZo63zOvGBrvjVqH4tTecepQLiY-H584V7bcaY2Ps6hr21DVQEcU_mrJ47KlPMxCbXwrARHaaTMQHIgM1MXE4e8Zsk1FBXMZR9YfxRivyBgmc77hJbbs7VExf8v5_QdJPmq-lFA2-whu4jK7kJ_wFq8Xh_aiHegKbkl61FwfgByZarZMT_dHkt4CVx5XbyvEYd_MSJH9qD0CFsXa-TKgP0MJhqJwHbI0FXpW_gG3XiKIbTK0yKrE1eCpGyvyNSnGCxdPbwWbTA
 	------------------------------------------------------------------------------------
 
-13. Open Kubernetes's forward for operate:
-	kubectl get pods -n=kubernetes-dashboard
-	kubectl port-forward --address 0.0.0.0 pods/<kubernetes-dashboard-xxx> 8443:8443 -n=kubernetes-dashboard
-	(Ex: kubectl port-forward --address 0.0.0.0 pods/kubernetes-dashboard-7b5bf5d559-stwjc 8443:8443 -n=kubernetes-dashboard)
+18. Open Kubernetes's forward for operate:
+	kubectl -n kubernetes-dashboard patch svc kubernetes-dashboard-kong-proxy --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30010}]'
+	kubectl get svc -n=kubernetes-dashboard
 
 	*Test by open browser: 
-	https://<Public IP>:8443
+	https://<Public IP>:30010  <== input token on No.4 for test
+
 ========================================  Create Dashboard =====================================================================
 
 14. (Worker1) Prepare configuration for initial kubernetes worker:
 (run export environment)
 cd ~
-curl https://raw.githubusercontent.com/praparn/sourcesetup/master/kubernetes_initial/version129/kubeadm-join-worker.yaml > ~/kubeadm-join-worker.yaml
+curl https://raw.githubusercontent.com/praparn/sourcesetup/master/kubernetes_initial/version130/kubeadm-join-worker.yaml > ~/kubeadm-join-worker.yaml
 sed -i -e "s/hostnamelb/$HostnameMaster1/g" ~/kubeadm-join-worker.yaml
 sed -i -e "s/token: tokenid/token: $tokenid/g" ~/kubeadm-join-worker.yaml
 sed -i -e "s/sha256:cahash/$cacerhash/g" ~/kubeadm-join-worker.yaml
@@ -199,7 +208,7 @@ htop
 16. (Worker2) Prepare configuration for initial kubernetes worker:
 (run export environment)
 cd ~
-curl https://raw.githubusercontent.com/praparn/sourcesetup/master/kubernetes_initial/version129/kubeadm-join-worker.yaml > ~/kubeadm-join-worker.yaml
+curl https://raw.githubusercontent.com/praparn/sourcesetup/master/kubernetes_initial/version130/kubeadm-join-worker.yaml > ~/kubeadm-join-worker.yaml
 sed -i -e "s/hostnamelb/$HostnameMaster1/g" ~/kubeadm-join-worker.yaml
 sed -i -e "s/token: tokenid/token: $tokenid/g" ~/kubeadm-join-worker.yaml
 sed -i -e "s/sha256:cahash/$cacerhash/g" ~/kubeadm-join-worker.yaml

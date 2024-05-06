@@ -201,7 +201,7 @@ sudo apt-get update && sudo apt-get install etcd-client
 	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_1.8_ConfigMap_Secret/databasemodule_deploy_config.yml
 	kubectl get deployment -n webmicroservice
 	kubectl get rs -n webmicroservice
-	kubectl get pods -n webmicroservice 
+	kubectl get pods -n webmicroservice
 
 4. Check location of etcd datastore for Kubernetes cluster by command:
 sudo cat /etc/kubernetes/manifests/etcd.yaml
@@ -271,9 +271,16 @@ spec:
 
 9. Reboot server for apply new configuration by command: sudo shutdown -r now
 
-10. Relogin server and check health of all kube-system pods by command: kubectl get pods -n=kube-system
+10. Relogin server and check health of all kube-system pods by command: watch kubectl get pods -n=kube-system
 
 11. Verify the change of encryption-provider-config by command: sudo ps -ef | grep kube-apiserver | grep "encryption-provider-config"
+
+12. Recheck value of secret and configmap on etcd datastore by command:
+sudo ETCDCTL_API=3 etcdctl \
+   --cert=/etc/kubernetes/pki/etcd/server.crt \
+   --key=/etc/kubernetes/pki/etcd/server.key \
+   --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+   get /registry/secrets/webmicroservice/databasemodule-secret
 
 12. Update all secret with default config with the new by command: kubectl get secrets -n=webmicroservice -o json | kubectl replace -f -
 
