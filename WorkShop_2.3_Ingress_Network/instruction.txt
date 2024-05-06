@@ -151,15 +151,15 @@ Kong Gateway API Deployment
 	13.2 Install Kong engine on cluster by command:
 	helm repo add kong https://charts.konghq.com
 	helm repo update
-	helm install kong kong/ingress -n kong --create-namespace --replicaCount=2 -f ~/kubernetes_202405/WorkShop_2.3_Ingress_Network/Kong/kong-values.yml
+	helm install kong kong/ingress -n kong --create-namespace -f ~/kubernetes_202405/WorkShop_2.3_Ingress_Network/Kong/kong-values.yml
 
 	13.3 Check running pods
 	kubectl get pods -n=kong
-	kubectl get svc -n=kong ==> record pods from NodePort
+	kubectl get svc -n=kong 
 
 	13.4 Test kong connnectivity
-	curl http://<public ip>:30150
-	curl https://<public ip>:32150
+	curl http://<public ip/private ip>:30150
+	curl https://<public ip/private ip>:32150 -k
 
 14. Apply route to Kong Gateway API
     kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-route1.yml
