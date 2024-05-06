@@ -11,7 +11,7 @@ metadata:
 spec:
   completions: 1
   parallelism: 1
-  Completion Mode:  Indexed
+  completionMode:  Indexed
   backoffLimitPerIndex: 1  # maximal number of failures per index
   ttlSecondsAfterFinished: 30
   activeDeadlineSeconds: 60
