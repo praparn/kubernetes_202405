@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aws-ingress
+  labels:
+    name: aws-ingress
+    owner: Praparn_L
+    version: "1.0"
+    module: NameSpace
+    environment: development

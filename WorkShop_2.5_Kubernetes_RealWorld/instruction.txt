@@ -150,6 +150,7 @@ UDP  ip-10-96-0-10.ap-southeast-1 rr
 
 12. (Master) Create AWS Cloud Controller (DaemonSet) by command:
 	kubectl create -k .
+	cd ~
 
 13. (Master) Verify pods of CLoud Controller by command:
 	kubectl get daemonset -n kube-system
@@ -307,7 +308,7 @@ curl https://$HostnameWorker2:xxxx -k
 kubectl delete pods/webtest
 kubectl delete svc/webtest
 
-====================================== Create Ingress Controller====================================================
+====================================== Create NGINX Ingress Controller====================================================
 
 27. (Master) Create ingress set:
 	27.1. Create NLB ingress on aws resource by command: 
@@ -348,7 +349,7 @@ ingress-nginx-controller             LoadBalancer   10.108.51.60   ae714106db8af
 ingress-nginx-controller-admission   ClusterIP      10.97.28.203   <none>                                                                               443/TCP                      100s
 ========================================
 
-    27.4 Wait (5 - 10 min) for NLB operate done and check response by command:
+    27.4 Wait (5 - 10 min) for NLB operate done and check response by command: (Remark: This need some manual operate on AWS side)
 	curl http://<CNAME of NLB>
 	curl https://<CNAME of NLB> -k
 
@@ -372,7 +373,19 @@ ingress-nginx-controller-admission   ClusterIP      10.97.28.203   <none>       
 
 30. (Master) Delete Ingress by command:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/ingress_webtest.yml
-	
+
+====================================== Create AWS Ingress Controller====================================================
+
+31. (Master) Install AWS Ingress Controller by command:
+	kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.5/cert-manager.yaml
+	sed -i -e "s/<your-cluster-name>/$ClusterName/g" ~/kubernetes_202405/WorkShop_2.5_Kubernetes_RealWorld/ingress-aws/v2_7_0_full.yml
+	kubectl apply -f ~/kubernetes_202405/master/WorkShop_2.5_Kubernetes_RealWorld/ingress-aws/v2_7_0_full.yaml
+	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.5_Kubernetes_RealWorld/ingress-aws/v2_7_0_ingclass.yml
+	kubectl get all -n=aws-ingress
+
+32. (Master) Deploy new ingress for AWS by command:
+    kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/ingress_webtest.yml
+
 31. (Master) Clean Up Lab:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/webtest_deploy.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/webtest_deploy2.yml

@@ -1,0 +1,13 @@
+{
+    "filterName": "Counts by Status Code",
+    "filterPattern": "[host, logName, user, timestamp, request, statusCode>200, size]",
+    "metricTransformations": [
+        {
+            "metricName": "response_count",
+            "metricNamespace": "SampleAppMetrics",
+            "metricValue": "1",
+            "defaultValue": 0.0,
+            "unit": "None"
+        }
+    ]
+}
