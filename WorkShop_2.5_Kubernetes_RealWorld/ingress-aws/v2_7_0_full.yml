@@ -600,7 +600,7 @@ metadata:
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-controller
-  namespace: aws-ingress
+  namespace: kube-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -608,7 +608,7 @@ metadata:
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-controller-leader-election-role
-  namespace: aws-ingress
+  namespace: kube-system
 rules:
 - apiGroups:
   - ""
@@ -798,7 +798,7 @@ metadata:
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-controller-leader-election-rolebinding
-  namespace: aws-ingress
+  namespace: kube-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -806,7 +806,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: aws-load-balancer-controller
-  namespace: aws-ingress
+  namespace: kube-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -821,7 +821,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: aws-load-balancer-controller
-  namespace: aws-ingress
+  namespace: kube-system
 ---
 apiVersion: v1
 kind: Service
@@ -829,7 +829,7 @@ metadata:
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-webhook-service
-  namespace: aws-ingress
+  namespace: kube-system
 spec:
   ports:
   - port: 443
@@ -845,7 +845,7 @@ metadata:
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-controller
-  namespace: aws-ingress
+  namespace: kube-system
 spec:
   replicas: 1
   selector:
@@ -908,7 +908,7 @@ metadata:
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-serving-cert
-  namespace: aws-ingress
+  namespace: kube-system
 spec:
   dnsNames:
   - aws-load-balancer-webhook-service.kube-system.svc
@@ -924,7 +924,7 @@ metadata:
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: aws-load-balancer-selfsigned-issuer
-  namespace: aws-ingress
+  namespace: kube-system
 spec:
   selfSigned: {}
 ---
@@ -943,7 +943,7 @@ webhooks:
   clientConfig:
     service:
       name: aws-load-balancer-webhook-service
-      namespace: aws-ingress
+      namespace: kube-system
       path: /mutate-v1-service
   failurePolicy: Fail
   name: mservice.elbv2.k8s.aws
@@ -968,7 +968,7 @@ webhooks:
   clientConfig:
     service:
       name: aws-load-balancer-webhook-service
-      namespace: aws-ingress
+      namespace: kube-system
       path: /mutate-v1-pod
   failurePolicy: Fail
   name: mpod.elbv2.k8s.aws
@@ -999,7 +999,7 @@ webhooks:
   clientConfig:
     service:
       name: aws-load-balancer-webhook-service
-      namespace: aws-ingress
+      namespace: kube-system
       path: /mutate-elbv2-k8s-aws-v1beta1-targetgroupbinding
   failurePolicy: Fail
   name: mtargetgroupbinding.elbv2.k8s.aws
@@ -1030,7 +1030,7 @@ webhooks:
   clientConfig:
     service:
       name: aws-load-balancer-webhook-service
-      namespace: aws-ingress
+      namespace: kube-system
       path: /validate-elbv2-k8s-aws-v1beta1-ingressclassparams
   failurePolicy: Fail
   name: vingressclassparams.elbv2.k8s.aws
@@ -1056,7 +1056,7 @@ webhooks:
   clientConfig:
     service:
       name: aws-load-balancer-webhook-service
-      namespace: aws-ingress
+      namespace: kube-system
       path: /validate-elbv2-k8s-aws-v1beta1-targetgroupbinding
   failurePolicy: Fail
   name: vtargetgroupbinding.elbv2.k8s.aws
@@ -1076,7 +1076,7 @@ webhooks:
   clientConfig:
     service:
       name: aws-load-balancer-webhook-service
-      namespace: aws-ingress
+      namespace: kube-system
       path: /validate-networking-v1-ingress
   failurePolicy: Fail
   matchPolicy: Equivalent
