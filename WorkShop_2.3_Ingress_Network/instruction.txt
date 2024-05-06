@@ -151,28 +151,27 @@ Kong Gateway API Deployment
 	13.2 Install Kong engine on cluster by command:
 	helm repo add kong https://charts.konghq.com
 	helm repo update
-	helm install kong kong/ingress -n kong --create-namespace --SVC.type=SVC.type --SVC.http.nodePort=30100 --SVC.tls.nodePort=32100 --replicaCount=2
+	helm install kong kong/ingress -n kong --create-namespace --replicaCount=2 -f ~/kubernetes_202405/WorkShop_2.3_Ingress_Network/Kong/kong-values.yml
 
 	13.3 Check running pods
 	kubectl get pods -n=kong
 	kubectl get svc -n=kong ==> record pods from NodePort
 
 	13.4 Test kong connnectivity
-	curl http://<public ip>:30100
-	curl https://<public ip>:32100
+	curl http://<public ip>:30150
+	curl https://<public ip>:32150
 
 14. Apply route to Kong Gateway API
     kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-route1.yml
     kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-route2.yml
 
-
 15. Test access website by browser:
-	http://webtest1.kuberneteslabthailand.com:30100
-	http://webtest2.kuberneteslabthailand.com:30100
+	http://webtest1.kuberneteslabthailand.com:30150
+	http://webtest2.kuberneteslabthailand.com:30150
 
 	*Remark: We can test with curl in lab machine by command:
-	curl http://<Public IP>:30100 -H 'Host:webtest1.kuberneteslabthailand.com'
-	curl http://<Public IP>:30100 -H 'Host:webtest2.kuberneteslabthailand.com'
+	curl http://<Public IP>:30150 -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl http://<Public IP>:30150 -H 'Host:webtest2.kuberneteslabthailand.com'
 
 16. Create key-authentication plugin by command:
 	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-jarvis-apikey.yml
@@ -182,12 +181,12 @@ Kong Gateway API Deployment
 	kubectl annotate service webtest2 konghq.com/plugins=rate-limit-5-min,key-auth --overwrite
 
 18. ReTest access website by browser: (Expect Fail 403 Forbidden)
-	http://webtest1.kuberneteslabthailand.com:30100
-	http://webtest2.kuberneteslabthailand.com:30100
+	http://webtest1.kuberneteslabthailand.com:30150
+	http://webtest2.kuberneteslabthailand.com:30150
 
 	*Remark: We can test with curl in lab machine by command:
-	curl http://<Public IP>:30100 -H 'Host:webtest1.kuberneteslabthailand.com'
-	curl http://<Public IP>:30100 -H 'Host:webtest2.kuberneteslabthailand.com'
+	curl http://<Public IP>:30150 -H 'Host:webtest1.kuberneteslabthailand.com'
+	curl http://<Public IP>:30150 -H 'Host:webtest2.kuberneteslabthailand.com'
 
 19. Create Consumer and Secret for authentiation by command:
     kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-jarvis-secret.yml
@@ -195,8 +194,8 @@ Kong Gateway API Deployment
 
 
 20. ReTest access website test again.
-    curl -H 'apikey: nd-6e^<vHSZa$3B/cYXuDN9K#8UzR?%s' http://<Public IP>:30100 -H 'Host:webtest1.kuberneteslabthailand.com'
-    curl -H 'apikey: nd-6e^<vHSZa$3B/cYXuDN9K#8UzR?%s' http://<Public IP>:30100 -H 'Host:webtest2.kuberneteslabthailand.com'
+    curl -H 'apikey: nd-6e^<vHSZa$3B/cYXuDN9K#8UzR?%s' http://<Public IP>:30150 -H 'Host:webtest1.kuberneteslabthailand.com'
+    curl -H 'apikey: nd-6e^<vHSZa$3B/cYXuDN9K#8UzR?%s' http://<Public IP>:30150 -H 'Host:webtest2.kuberneteslabthailand.com'
 
 21. CleanUp Lab
     kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/Kong/kong-jarvis-secret.yml
