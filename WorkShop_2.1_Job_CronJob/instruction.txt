@@ -76,10 +76,10 @@ kubectl delete -f job_notify_cron.yml
 Create Parallel Job for access redis and pull:
 ====================================================
 1. Get command prompt for access folder workshop 2.1 by command :cd /xxxx/WorkShop_2.1_Job_CronJob
-2. Check File on WorkShop by command: "cd ~/kubernetes_202405/WorkShop_2.1_Job_CronJob/parallelism"
+2. Check File on WorkShop by command: "cd ~"
 3. Create Redis and Redis's service by command:
-  kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/redis-pods.yml
-  kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/redis-service.yml
+  kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/parallelism/redis-pods.yml
+  kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/parallelism/redis-service.yml
 
 4. Check redis pods and service by command:
   kubectl get pods
@@ -113,9 +113,10 @@ Create Parallel Job for access redis and pull:
   redis:6379> lrange job2 0 -1
   -------------
   exit
+  exit
 
  6. Run job by command:
-  kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/job-parallel.yml
+  kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/parallelism/job-parallel.yml
   kubectl describe jobs/job-parallel
 
  7. Wait under job had been done:
@@ -125,5 +126,5 @@ Create Parallel Job for access redis and pull:
   kubectl logs pods/<pods name>
  
  9. CleanUp lab:
-  kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/redis-pods.yml
-  kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/redis-service.yml
+  kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/parallelism/redis-pods.yml
+  kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.1_Job_CronJob/parallelism/redis-service.yml

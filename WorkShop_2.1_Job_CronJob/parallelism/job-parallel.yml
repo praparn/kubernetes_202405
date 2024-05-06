@@ -5,7 +5,7 @@ metadata:
 spec:
   #completions: 1
   parallelism: 2
-  Completion Mode:  Indexed
+  completionMode:  Indexed
   ttlSecondsAfterFinished: 300
   activeDeadlineSeconds: 600
   template:
