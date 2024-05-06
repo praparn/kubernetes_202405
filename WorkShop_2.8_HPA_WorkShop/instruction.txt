@@ -3,7 +3,7 @@ Part0: Install Metric Server
 ====================================================
 1. (Master) Create Metric Server:
 	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/main/WorkShop_2.8_HPA_WorkShop/components.yaml
-	kubectl get pods -n=kube-system
+	kubectl get pods -n=kube-system && watch kubectl get pods -n=kube-system
 	kubectl logs pods/<metrics's pods name> -n=kube-system
 
 2. (Master) Test get performance data from metric server by command: (Wait 5 min)
@@ -42,7 +42,7 @@ Part 1: HPA Configuration:
 	kubectl top pods
 	kubectl top nodes
 
-8. Scale Down by Ctrl+C on load-generate
+8. Scale Down by Ctrl+C and top on load-generate
 
 9. Monitor performance: (Interval is 10 min)
 	kubectl get hpa
@@ -51,10 +51,10 @@ Part 1: HPA Configuration:
 	kubectl describe hpa/webtest
 
 10. Delete HPA by command:
-    kubectl Delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.8_HPA_WorkShop/webtest_hpa.yml
+    kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.8_HPA_WorkShop/webtest_hpa.yml
 
 11. Crete HPA base on container by command:
-	kubectl Delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.8_HPA_WorkShop/webtest_hpa_container_base.yml
+	kubectl create -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.8_HPA_WorkShop/webtest_hpa_container_base.yml
 
 12. Generate Load:
 	kubectl delete pods/load-generator
