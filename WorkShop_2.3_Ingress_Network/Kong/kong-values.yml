@@ -14,8 +14,8 @@ gateway:
       enabled: true
       nodePort: 30150
     tls:
-      enabled: true
-      nodePort: 32150
+      enabled: false
+     # nodePort: 32150
 #  ingressController:
 #    env:
 #      LOG_LEVEL: trace

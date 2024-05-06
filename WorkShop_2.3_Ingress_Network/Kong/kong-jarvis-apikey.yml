@@ -1,8 +1,8 @@
 apiVersion: configuration.konghq.com/v1
-  kind: KongPlugin
-   metadata:
-     name: jarvis-key-auth
-  plugin: key-auth
-  config:
-    key_names:
-    - apikey
+kind: KongPlugin
+metadata:
+  name: jarvis-key-auth
+plugin: key-auth
+config:
+  key_names:
+  - apikey
