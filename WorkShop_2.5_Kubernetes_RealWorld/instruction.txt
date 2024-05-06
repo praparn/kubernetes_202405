@@ -373,22 +373,7 @@ ingress-nginx-controller-admission   ClusterIP      10.97.28.203   <none>       
 
 30. (Master) Delete Ingress by command:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/ingress_webtest.yml
-
-====================================== Create AWS Ingress Controller====================================================
-
-31. (Master) Install AWS Ingress Controller by command:
-	kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.5.4/cert-manager.yaml
-	sed -i -e "s/<your-cluster-name>/$ClusterName/g" ~/kubernetes_202405/WorkShop_2.5_Kubernetes_RealWorld/ingress-aws/v2_7_0_full.yml
-	more ~/kubernetes_202405/WorkShop_2.5_Kubernetes_RealWorld/ingress-aws/v2_7_0_full.yml
-
-	kubectl apply -f ~/kubernetes_202405/WorkShop_2.5_Kubernetes_RealWorld/ingress-aws/aws-ingress-namespace.yml
-	kubectl apply -f ~/kubernetes_202405/WorkShop_2.5_Kubernetes_RealWorld/ingress-aws/v2_7_0_full.yml
-	kubectl apply -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.5_Kubernetes_RealWorld/ingress-aws/v2_7_0_ingclass.yml
-	kubectl get all -n=aws-ingress
-
-32. (Master) Deploy new ingress for AWS by command:
-    kubectl apply -f ~/kubernetes_202405/WorkShop_2.5_Kubernetes_RealWorld/ingress-aws/aws-example-containers-blog-maelstrom/aws-lb-controller-blog/ingress-grouping/
-
+	
 31. (Master) Clean Up Lab:
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/webtest_deploy.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.3_Ingress_Network/webtest_deploy2.yml

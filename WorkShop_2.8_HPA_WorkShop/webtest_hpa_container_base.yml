@@ -1,4 +1,4 @@
-apiVersion: autoscaling/v2
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   annotations:
@@ -11,6 +11,8 @@ spec:
     name: webtest
   minReplicas: 1
   maxReplicas: 10
+  containerMetrics:
+  - name: webtest # Target container within the Pods
   metrics:
   - type: ContainerResource
     resource:
@@ -19,10 +21,10 @@ spec:
       target:
         type: Utilization
         averageUtilization: 10
-  - type: ContainerResource
-    resource:
-      container: webtest
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: 10
+#  - type: ContainerResource
+#    resource:
+#      container: webtest
+#      name: memory
+#      target:
+#        type: Utilization
+#        averageUtilization: 10
