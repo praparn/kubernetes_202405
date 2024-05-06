@@ -28,10 +28,8 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IkZrTkFjN296TUxsbmFfZmU0MklfLVdUdnRjQXFyMWJ1TzFLbWRD
 	------------------------------------------------------------------------------------
 
 5. Open Kubernetes's forward for operate:
-	kubectl get pods -n=kubernetes-dashboard
-	kubectl port-forward --address 0.0.0.0 pods/<kubernetes-dashboard-xxx> 8443:8443 -n=kubernetes-dashboard
-	(Ex: kubectl port-forward --address 0.0.0.0 pods/kubernetes-dashboard-7b5bf5d559-stwjc 8443:8443 -n=kubernetes-dashboard)
-
+	kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+	
 	*Test by open browser: 
 	https://<Public IP>:8443
 

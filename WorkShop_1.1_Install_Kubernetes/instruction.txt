@@ -45,7 +45,7 @@ libcrc32c              16384  2 nf_conntrack,ip_vs
 
 6. Initial kubernetes by command:
     sudo su -
-    curl https://raw.githubusercontent.com/praparn/sourcesetup/master/kubernetes_initial/version129/kubeadm-init-basic-containerd.yaml > /tmp/kubeadm-init-basic-containerd.yaml
+    curl https://raw.githubusercontent.com/praparn/sourcesetup/master/kubernetes_initial/version130/kubeadm-init-basic-containerd.yaml > /tmp/kubeadm-init-basic-containerd.yaml
     kubeadm init --config /tmp/kubeadm-init-basic-containerd.yaml    
     exit
 
