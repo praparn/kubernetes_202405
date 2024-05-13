@@ -55,5 +55,4 @@ Part 1: HPA Configuration:
 
 11. Cleanup lab by command:
 	kubectl delete pods/load-generator
-	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.8_HPA_WorkShop/webtest-container-base.yml
 	kubectl delete -f https://raw.githubusercontent.com/praparn/kubernetes_202405/master/WorkShop_2.8_HPA_WorkShop/webtest_deploy_hpa.yml
